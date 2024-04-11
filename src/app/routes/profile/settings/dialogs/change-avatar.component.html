@@ -1,0 +1,38 @@
+<h2 id="change-avatar-title" mat-dialog-title>Choose your avatar image</h2>
+
+<form class="form-field-full" [formGroup]="avatarForm" (ngSubmit)="submit()">
+  <mat-dialog-content style="width: 380px;">
+    <div class="d-flex flex-col align-content-center justify-content-center align-items-center">
+      <!-- UPLOADED AVATAR -->
+      <img *ngIf="avatarRawFile"
+           [src]="avatarRawFile" style="max-width: 300px"
+           alt="avatar" class="m-b-16">
+      <!-- CHOOSE FILE BUTTON -->
+      <button id="choose-avatar-button" type="button" mat-raised-button (click)="fileInput.click()">
+        Choose File
+      </button>
+      <!-- HIDDEN INPUT -->
+      <input hidden (change)="getFile($event)" #fileInput type="file" id="file">
+      <!-- VALIDATION ERRORS -->
+      <mat-error *ngIf="avatar.invalid">
+        <div *ngIf="errorFileSize">{{ errorFileSize }}</div>
+        <div *ngIf="errorExtension">{{ errorExtension }}</div>
+        <div *ngIf="errorResolution">{{ errorResolution }}</div>
+      </mat-error>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <!-- CLOSE BUTTON -->
+    <button id="avatar-close-button" mat-raised-button mat-dialog-close>
+      Close
+    </button>
+    <!-- SUBMIT BUTTON -->
+    <button id="avatar-submit-button" mat-raised-button color="primary"
+            type="submit"
+            [disabled]="!!avatarForm.invalid"
+            [loading]="isSubmitting">
+      Submit
+    </button>
+  </mat-dialog-actions>
+</form>

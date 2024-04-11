@@ -1,0 +1,155 @@
+<mat-card>
+  <mat-card-header class="m-b-16">
+    <mat-card-title id="create-user-title">Create user</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="reactiveForm" class="form-field-full">
+
+      <div class="row">
+        <div class="col-sm-6 col-xl-4">
+          <mat-form-field>
+            <mat-label>Username (email address)</mat-label>
+            <input id="username" matInput placeholder="e.g. user@email.com" formControlName="username">
+            <mat-error id="username-error" *ngIf="username.invalid">
+              {{ username | validationMessage }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-6 col-xl-8"></div>
+
+        <div class="col-sm-6 col-xl-4">
+          <mat-form-field>
+            <mat-label>{{ 'password' | translate }}</mat-label>
+            <input id="password" matInput type="password" formControlName="password" required>
+            <mat-error id="password-error" *ngIf="password.invalid">
+              {{ password | validationMessage }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-6 col-xl-8"></div>
+
+        <div class="col-sm-6 col-xl-4">
+          <mat-form-field>
+            <mat-label>Confirm password</mat-label>
+            <input id="confirm-password" matInput type="password" formControlName="confirmPassword" required>
+            <mat-error id="confirm-password-error" *ngIf="confirmPassword.invalid">
+              {{ confirmPassword | validationMessage : 'password' }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <mat-divider class="m-y-16"></mat-divider>
+      <h3>Profile:</h3>
+      <div class="row">
+        <div class="col-sm-6 col-xl-4">
+          <mat-form-field>
+            <mat-label>{{ 'profile_settings.name' | translate }}</mat-label>
+            <input id="name" matInput placeholder="Your name" formControlName="name" required>
+            <mat-error id="name-error" *ngIf="name.invalid">{{ name | validationMessage }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-6 col-xl-4">
+          <mat-form-field>
+            <mat-label>{{ 'profile_settings.surname' | translate }}</mat-label>
+            <input id="surname" matInput placeholder="Your surname" formControlName="surname">
+            <mat-error id="surname-error" *ngIf="surname.invalid">Please enter surname</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-6 col-xl-4">
+          <mat-form-field>
+            <mat-label>{{ 'profile_settings.gender' | translate }}</mat-label>
+            <mat-select id="gender" formControlName="gender">
+              <mat-option>-- None --</mat-option>
+              <mat-option value="MALE">Male</mat-option>
+              <mat-option value="FEMALE">Female</mat-option>
+            </mat-select>
+            <mat-error id="gender-error" *ngIf="gender.invalid">{{ gender | validationMessage }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-6 col-xl-4">
+          <mat-form-field>
+            <mat-label>{{ 'profile_settings.city' | translate }}</mat-label>
+            <input id="city" matInput placeholder="Your city" formControlName="city">
+            <mat-error id="city-error" *ngIf="city.invalid">{{ city | validationMessage }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-6 col-xl-4">
+          <mat-form-field>
+            <mat-label>{{ 'profile_settings.address' | translate }}</mat-label>
+            <input id="address" matInput placeholder="Your address" formControlName="address">
+            <mat-error id="address-error" *ngIf="address.invalid">{{ address | validationMessage }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-6 col-xl-4">
+          <mat-form-field>
+            <mat-label>{{ 'profile_settings.company' | translate }}</mat-label>
+            <input id="company" matInput placeholder="Your company" formControlName="company">
+            <mat-error id="company-error" *ngIf="company.invalid">{{ company | validationMessage }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-6 col-xl-4">
+          <mat-form-field>
+            <mat-label>{{ 'profile_settings.mobile' | translate }}</mat-label>
+            <input id="mobile" matInput placeholder="Your number" type="text" formControlName="mobile"
+                   [showMaskTyped]="true" prefix="+38 " mask="(000) 000-0000">
+            <mat-icon matSuffix>smartphone</mat-icon>
+            <mat-error id="mobile-error" *ngIf="mobile.invalid">{{ mobile | validationMessage }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-6 col-xl-4">
+          <mat-form-field>
+            <mat-label>{{ 'profile_settings.tele' | translate }}</mat-label>
+            <input id="tele" matInput placeholder="Your number" type="string" formControlName="tele"
+                   [showMaskTyped]="true" prefix="+38 " mask="(000) 000-0000">
+            <mat-icon matSuffix>phone</mat-icon>
+            <mat-error id="tele-error" *ngIf="tele.invalid">{{ tele | validationMessage }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-6 col-xl-4">
+          <mat-form-field>
+            <mat-label>{{ 'profile_settings.website' | translate }}</mat-label>
+            <input id="website" matInput placeholder="Your website" formControlName="website">
+            <mat-error id="website-error" *ngIf="website.invalid">{{ website | validationMessage }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-6 col-xl-4">
+          <mat-form-field>
+            <mat-label>{{ 'profile_settings.birthday' | translate }}</mat-label>
+            <input id="date" matInput [matDatepicker]="picker2" placeholder="Your birthday" formControlName="date">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+            <mat-error id="date-error" *ngIf="date.invalid">{{ date | validationMessage }}</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end">
+        <!-- BUTTON BACK -->
+        <button id="back-button" class="m-r-8" mat-raised-button routerLink="../">
+          Back
+        </button>
+        <!-- BUTTON SAVE -->
+        <button id="create-button" mat-raised-button color="primary"
+                type="submit"
+                [disabled]="!!reactiveForm.invalid"
+                [loading]="isSubmitting" (click)="save()">
+          Create
+        </button>
+      </div>
+
+    </form>
+  </mat-card-content>
+</mat-card>

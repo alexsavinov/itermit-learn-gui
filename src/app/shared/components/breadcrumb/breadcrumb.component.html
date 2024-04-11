@@ -1,0 +1,14 @@
+<nav aria-label="breadcrumb">
+  <ol class="custom-breadcrumb">
+    <li class="custom-breadcrumb-item"
+        *ngFor="let navLink of nav; trackBy: trackByNavlink; first as isFirst;">
+      <a href="/admin" class="link" *ngIf="isFirst">
+        <span class="breadcrumb-link">{{navLink}}</span>
+      </a>
+      <ng-container *ngIf="!isFirst">
+        <mat-icon class="chevron">chevron_right</mat-icon>
+        <span class="breadcrumb-link">{{navLink | translate}}</span>
+      </ng-container>
+    </li>
+  </ol>
+</nav>

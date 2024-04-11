@@ -1,0 +1,25 @@
+<mat-toolbar class="custom-toolbar">
+  <button mat-icon-button *ngIf="showToggle" (click)="toggleSidenav.emit()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <button id="home-button" mat-icon-button routerLink="/">
+    <mat-icon>home</mat-icon>
+  </button>
+
+  <app-branding *ngIf="showBranding"></app-branding>
+
+  <span class="flex-fill"></span>
+
+  <button id="toggle-fullscreen-button" mat-icon-button (click)="toggleFullscreen()">
+    <mat-icon>fullscreen</mat-icon>
+  </button>
+
+  <button id="toggle-theme-button" mat-icon-button matTooltip="Toggle theme" (click)="toggleTheme()">
+    <mat-icon>{{dark ? 'brightness_3' : 'wb_sunny'}}</mat-icon>
+  </button>
+
+  <app-translate></app-translate>
+
+  <app-user></app-user>
+</mat-toolbar>

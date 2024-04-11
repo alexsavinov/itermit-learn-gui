@@ -1,0 +1,37 @@
+@use '../style/variables';
+@use '../style/breakpoints';
+
+.custom-sidebar-header {
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: variables.$toolbar-height-desktop;
+  padding: 0 8px;
+  overflow: hidden;
+
+  @include breakpoints.bp-lt(small) {
+    & {
+      height: variables.$toolbar-height-mobile;
+    }
+  }
+
+  // Colorful
+  .custom-header-white & {
+    background-color: white;
+  }
+}
+
+.custom-sidebar-main {
+  height: calc(100% - #{variables.$toolbar-height-desktop});
+  overflow: auto;
+
+  @include breakpoints.bp-lt(small) {
+    & {
+      height: calc(100% - #{variables.$toolbar-height-mobile});
+    }
+  }
+}

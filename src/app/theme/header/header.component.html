@@ -1,0 +1,30 @@
+<mat-toolbar class="main-toolbar">
+  <app-branding id="home-button" *ngIf="showBranding"></app-branding>
+
+  <span class="flex-fill"></span>
+
+  <button id="toggle-fullscreen-button"
+          mat-icon-button matTooltip="Toggle fullscreen"
+          (click)="toggleFullscreen()">
+    <mat-icon>fullscreen</mat-icon>
+  </button>
+
+  <button id="toggle-theme-button"
+          mat-icon-button matTooltip="Toggle theme"
+          (click)="toggleTheme()">
+    <mat-icon>{{ dark ? 'brightness_3' : 'wb_sunny' }}</mat-icon>
+  </button>
+
+  <app-translate></app-translate>
+
+  <ng-template [ngxPermissionsOnly]="['ROLE_ADMIN']"
+               (permissionsAuthorized)="authorized()"
+               (permissionsUnauthorized)="unAuthorized()">
+    <button id="admin-panel-button" mat-icon-button matTooltip="Admin panel" routerLink="/admin">
+      <mat-icon>settings</mat-icon>
+    </button>
+  </ng-template>
+
+  <app-user></app-user>
+
+</mat-toolbar>

@@ -1,0 +1,134 @@
+<mat-card>
+  <mat-card-header class="m-b-16">
+    <mat-card-title id="edit-profile-title">Edit Profile</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="reactiveForm" class="form-field-full">
+      <div class="row">
+        <div class="col-sm-6 col-xl-4">
+          <mat-form-field>
+            <mat-label>{{ 'profile_settings.name' | translate }}</mat-label>
+            <input id="name" matInput placeholder="Simple placeholder" formControlName="name" required>
+            <mat-error *ngIf="reactiveForm.get('name')?.invalid">Please enter name</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-6 col-xl-4">
+          <mat-form-field>
+            <mat-label>{{ 'profile_settings.surname' | translate }}</mat-label>
+            <input id="surname" matInput placeholder="Simple placeholder" formControlName="surname">
+            <mat-error *ngIf="reactiveForm.get('surname')?.invalid">Please enter surname</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-6 col-xl-4">
+          <mat-form-field>
+            <mat-label>{{ 'profile_settings.gender' | translate }}</mat-label>
+            <mat-select id="gender" formControlName="gender">
+              <mat-option>-- None --</mat-option>
+              <mat-option value="MALE">Male</mat-option>
+              <mat-option value="FEMALE">Female</mat-option>
+            </mat-select>
+            <mat-error *ngIf="reactiveForm.get('gender')?.invalid">Please select gender</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-6 col-xl-4">
+          <mat-form-field>
+            <mat-label>{{ 'profile_settings.city' | translate }}</mat-label>
+            <input id="city" matInput placeholder="Simple placeholder" formControlName="city">
+            <mat-error *ngIf="reactiveForm.get('city')?.invalid">Please enter city</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-6 col-xl-4">
+          <mat-form-field>
+            <mat-label>{{ 'profile_settings.address' | translate }}</mat-label>
+            <input id="address" matInput placeholder="Simple placeholder" formControlName="address">
+            <mat-error *ngIf="reactiveForm.get('address')?.invalid">Please enter address</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-6 col-xl-4">
+          <mat-form-field>
+            <mat-label>{{ 'profile_settings.company' | translate }}</mat-label>
+            <input id="company" matInput placeholder="Simple placeholder" formControlName="company">
+            <mat-error *ngIf="reactiveForm.get('company')?.invalid">Please enter company</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-6 col-xl-4">
+          <mat-form-field>
+            <mat-label>{{ 'profile_settings.mobile' | translate }}</mat-label>
+            <input id="mobile" matInput placeholder="Simple placeholder" type="number" formControlName="mobile">
+            <mat-icon matSuffix>smartphone</mat-icon>
+            <mat-error *ngIf="reactiveForm.get('mobile')?.invalid">Please enter mobile</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-6 col-xl-4">
+          <mat-form-field>
+            <mat-label>{{ 'profile_settings.tele' | translate }}</mat-label>
+            <input id="tele" matInput placeholder="Simple placeholder" type="number" formControlName="tele">
+            <mat-icon matSuffix>phone</mat-icon>
+            <mat-error *ngIf="reactiveForm.get('tele')?.invalid">Please enter tele</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-6 col-xl-4">
+          <mat-form-field>
+            <mat-label>{{ 'profile_settings.website' | translate }}</mat-label>
+            <input id="website" matInput placeholder="Simple placeholder" formControlName="website">
+            <mat-error *ngIf="reactiveForm.get('website')?.invalid">Please enter website</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-6 col-xl-4">
+          <mat-form-field>
+            <mat-label>{{ 'profile_settings.birthday' | translate }}</mat-label>
+            <input id="date" matInput [matDatepicker]="picker2" placeholder="Choose a date" formControlName="date">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+            <mat-error *ngIf="reactiveForm.get('date')?.invalid">Please enter date</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end">
+        <button id="save-button"
+                mat-raised-button color="primary"
+                [disabled]="!!reactiveForm.invalid"
+                [loading]="isSubmitting" (click)="save()">
+          Save
+        </button>
+      </div>
+
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-header class="m-b-16">
+    <mat-card-title id="additional-settings-title">Additional settings</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content class="d-flex flex-col align-items-start">
+
+    <button id="change-password-button"
+            mat-raised-button
+            color="primary"
+            (click)="openPasswordDialog()">
+      Change password
+    </button>
+
+    <button id="change-avatar-button"
+            mat-raised-button
+            color="primary"
+            class="m-t-16"
+            (click)="openAvatarDialog()">
+      Change avatar
+    </button>
+
+  </mat-card-content>
+</mat-card>

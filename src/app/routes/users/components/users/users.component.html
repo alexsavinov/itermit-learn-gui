@@ -1,0 +1,45 @@
+<page-header></page-header>
+
+<div class="d-flex justify-content-between align-items-center">
+
+  <!-- SEARCH -->
+  <form class="m-x--4" (submit)="$event.preventDefault()">
+    <mat-form-field class="m-x-4" appearance="outline">
+      <input id="search"
+             matInput
+             [(ngModel)]="query.search"
+             name="search"
+             (keyup)="onKeyUp()"
+             placeholder="Search">
+    </mat-form-field>
+
+    <!-- RESET -->
+    <button id="reset-button"
+            class="m-x-4"
+            mat-raised-button
+            type="submit"
+            color="warn"
+            (click)="reset()">
+      Reset
+    </button>
+  </form>
+
+  <!-- CREATE -->
+  <button id="create-button" class="m-b-12" mat-raised-button color="primary" routerLink="create">
+    Create
+  </button>
+</div>
+
+<mtx-grid [data]="list"
+          [columns]="columns"
+          [length]="total"
+          [loading]="isLoading"
+          [pageOnFront]="false"
+          [pageIndex]="query.page"
+          [pageSize]="query.size"
+          [pageSizeOptions]="[1,5,10,20]"
+          [sortActive]="'id'"
+          [sortOnFront]="false"
+          (sortChange)="changeSort($event)"
+          (page)="getNextPage($event)">
+</mtx-grid>

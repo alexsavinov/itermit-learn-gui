@@ -1,0 +1,26 @@
+{
+  "menu": [
+    {
+      "route": "dashboard",
+      "name": "dashboard",
+      "type": "link",
+      "icon": "dashboard",
+      "badge": {
+        "color": "red-500",
+        "value": "3"
+      }
+    },
+    {
+      "route": "users",
+      "name": "users",
+      "type": "link",
+      "icon": "group"
+    },
+    {
+      "route": "news",
+      "name": "news",
+      "type": "link",
+      "icon": "announcement"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+<h2 id="top">Last news</h2>
+
+<div class="article-item" *ngFor="let newsItem of news">
+
+  <mat-card class="b-2" [routerLink]="'/news/'+ newsItem.id">
+    <mat-card-header>
+      <mat-card-title class="d-flex">
+        <mat-chip class="article-publish-date">
+          {{ newsItem.publishDate | date }}
+        </mat-chip>
+        <div class="article-title m-l-12 text-purple-300">
+          {{ newsItem.title }}
+        </div>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="d-flex align-items-start w-100 p-16"
+                      style="gap: 20px">
+      <div>
+        <img class="article-logo"
+             *ngIf="newsItem.logo"
+             [src]="environment.staticUrl + environment.newsImages + newsItem.logo"
+             style="height: 200px; width: auto"
+             alt="logo">
+      </div>
+      <div class="article-description" style="width: 100%">
+        {{ newsItem.description }}
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+</div>
+
+<button id="show-more-button" mat-raised-button (click)="showMore()">
+  Show more
+</button>
+
+<app-scroll-top></app-scroll-top>

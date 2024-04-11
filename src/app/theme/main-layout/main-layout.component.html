@@ -1,0 +1,14 @@
+<div class="custom-container-wrap"
+     [ngClass]="{'custom-sidenav-collapsed': options.sidenavCollapsed && options.navPos!=='top',
+                 'custom-navbar-side': options.navPos==='side',
+                 'custom-navbar-top': options.navPos==='top',
+                 'custom-header-above': options.headerPos==='above',
+                 'custom-header-fixed': options.headerPos==='fixed',
+                 'custom-header-white': themeColor!=='dark'}"
+     >
+  <ng-progress></ng-progress>
+  <app-header></app-header>
+      <div class="custom-content">
+        <router-outlet></router-outlet>
+      </div>
+</div>

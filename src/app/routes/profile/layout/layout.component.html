@@ -1,0 +1,32 @@
+<page-header class="p-t-32 p-b-48 m-b--24 bg-gray-900"
+             title="Personal Profile" hideBreadcrumb>
+</page-header>
+
+<div class="row">
+  <div class="col-sm-4 col-md-4 col-lg-3">
+    <mat-card>
+      <mat-card-content>
+        <div class="text-center">
+
+          <img *ngIf="user.profile?.avatar"
+               [lazyLoad]="environment.staticUrl + environment.avatarImages + user.profile?.avatar"
+               class="m-b-8 r-full"
+               [src]="environment.staticUrl + environment.avatarImages + user.profile?.avatar | safeUrl"
+               alt="" width="80">
+          <h2 class="m-t-0 m-b-8 f-w-400">{{ user.username }}</h2>
+        </div>
+        <mat-nav-list class="m-x--16 m-b--16 m-t-16">
+          <mat-divider></mat-divider>
+          <a mat-list-item routerLink="../profile/settings">
+            <mat-icon matListItemIcon>settings</mat-icon>
+            Settings
+          </a>
+        </mat-nav-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="col-sm-8 col-md-8 col-lg-9">
+    <router-outlet></router-outlet>
+  </div>
+</div>
