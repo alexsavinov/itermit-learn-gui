@@ -1,4 +1,5 @@
 import {
+  AfterContentChecked,
   AfterViewChecked,
   Component,
   OnInit,
@@ -35,7 +36,7 @@ export type ChartOptions = {
   templateUrl: './user-session-summary.component.html',
   styleUrl: './user-session-summary.component.scss'
 })
-export class UserSessionSummaryComponent implements OnInit, AfterViewChecked {
+export class UserSessionSummaryComponent implements OnInit, AfterContentChecked {
   isLoading = true;
 
   session!: ISession;
@@ -57,22 +58,22 @@ export class UserSessionSummaryComponent implements OnInit, AfterViewChecked {
     this.initChart();
   }
 
-  ngAfterViewChecked(): void {
+  ngAfterContentChecked(): void {
     if (this.chart) {
       this.chart.updateSeries(
           [
             {
               name: "Correct",
               data: [
-                this.session.questionSet?.questions?.length,
-                this.correctQuizAnswers
+                Number(this.session.questionSet?.questions?.length),
+                Number(this.correctQuizAnswers)
               ],
             },
             {
               name: "Incorrect",
               data: [
-                Number(this.session.userAnswers?.length) - Number(this.session.questionSet?.questions?.length),
-                Number(this.session.questionSet?.questions?.length) - Number(this.correctQuizAnswers)
+                Number(this.session.questionSet?.questions?.length) - Number(this.session.userAnswers?.length),
+                Number(this.session.questionSet?.quizzes?.length) - Number(this.correctQuizAnswers)
               ],
             }
           ]
@@ -102,7 +103,7 @@ export class UserSessionSummaryComponent implements OnInit, AfterViewChecked {
 
   initChart() {
     this.chartOptions = {
-      colors : ['#8db95e', '#e57575'],
+      colors: ['#8db95e', '#e57575'],
       series:
           [],
       chart: {
