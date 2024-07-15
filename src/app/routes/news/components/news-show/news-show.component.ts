@@ -1,4 +1,4 @@
-import { Component, OnInit, Sanitizer, SecurityContext } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
@@ -18,33 +18,34 @@ export class NewsShowComponent implements OnInit {
   content!: SafeHtml;
 
   constructor(
-    private activatedRoute: ActivatedRoute,
-    private sanitizer: DomSanitizer,
-    private newsService: NewsService) {
+      private activatedRoute: ActivatedRoute,
+      private sanitizer: DomSanitizer,
+      private newsService: NewsService) {
   }
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(({ id }) => {
-        this.newsService.getById(id).subscribe(article => {
-          this.article = addAPIUrl(article);
+    this.activatedRoute.params.subscribe(({id}) => {
+          this.newsService.getById(id).subscribe(article => {
+            this.article = addAPIUrl(article);
 
-          this.content = this.sanitizer.bypassSecurityTrustHtml(
-            this.article.content?.replaceAll(
-              'pre class="language-java"',
-              'pre class="prettyprint linenums lang-java w-80"',
-            ) || '');
+            this.content = this.sanitizer.bypassSecurityTrustHtml(
+                this.article.content?.replaceAll(
+                    'pre class="language-java"',
+                    'pre class="prettyprint linenums lang-java w-80"',
+                ) || '');
 
-          const body = <HTMLDivElement>document.body;
-          const script = document.createElement('script');
-          script.innerHTML = '';
-          // desert doxy sons-of-obsidian sunburst
-          script.src = 'https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=java&skin=sons-of-obsidian';
-          script.async = true;
-          script.defer = true;
-          body.appendChild(script);
-        });
-      },
+            const body = <HTMLDivElement>document.body;
+            const script = document.createElement('script');
+            script.innerHTML = '';
+            // desert doxy sons-of-obsidian sunburst
+            script.src = 'https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=java&skin=sons-of-obsidian';
+            script.async = true;
+            script.defer = true;
+            body.appendChild(script);
+          });
+        },
     );
+
   }
 
   protected readonly environment = environment;

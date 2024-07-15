@@ -1,0 +1,89 @@
+<page-header></page-header>
+
+<mtx-grid [data]="list"
+          [columns]="columns"
+          [length]="total"
+          [loading]="isLoading"
+          [multiSelectable]="true"
+          [rowSelectable]="true"
+          [rowStriped]="true"
+          [showToolbar]="true"
+          [toolbarTemplate]="tableTitleTpl"
+          [columnHideable]="true"
+          [columnPinnable]="true"
+          [pageOnFront]="false"
+          [pageIndex]="query.page"
+          [pageSize]="query.size"
+          [pageSizeOptions]="[1,5,10,20]"
+          [sortActive]="'id'"
+          [sortOnFront]="false"
+          (sortChange)="changeSort($event)"
+          (page)="getNextPage($event)"
+          (rowSelectedChange)="changeTableSelectedRows($event)"
+          [cellTemplate]="{name: tableCellInputTpl}">
+</mtx-grid>
+
+<!-- TABLE TITLE TEMPLATE -->
+<ng-template #tableTitleTpl>
+  <div class="d-flex justify-content-between">
+
+    <!-- SEARCH -->
+    <form class="d-flex align-items-center"
+          (submit)="$event.preventDefault()"
+          [formGroup]="reactiveForm">
+      <mat-form-field appearance="outline" class="m-b--16">
+        <input id="search"
+               formControlName="search"
+               matInput
+               (keyup)="onKeyUp()"
+               placeholder="Search">
+      </mat-form-field>
+
+      <button id="reset-button" class="m-x-8" color="warn"
+              mat-stroked-button type="submit"
+              (click)="reset()">
+        <mat-icon>restart_alt</mat-icon>
+        Reset
+      </button>
+    </form>
+
+    <div class="d-flex align-items-center">
+      <button mat-stroked-button id="create-button"
+              color="primary" (click)="addCategory()">
+        <mat-icon>add</mat-icon>
+        Add
+      </button>
+      <button mat-stroked-button color="warn" class="m-l-8"
+              (click)="deleteCategories()" *ngIf="categoriesSelected.length">
+        Delete selected
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- TABLE CELL INPUT TEMPLATE -->
+<ng-template #tableCellInputTpl let-row let-index="index" let-col="colDef">
+  <div class="d-flex flex-row" *ngIf="isCellEditable(index, col)">
+    <input matInput #cell
+           class="table-cell"
+           type="{{col.type}}"
+           [value]=row[col.field]
+           (change)="changeCell(row, col, cell.value)"
+           (keyup)="keyupCell($event, row)"
+           (mouseover)="cell.focus()">
+    <button (click)="cellFinishEditing(row)">
+      <mat-icon class="icon-18">check</mat-icon>
+    </button>
+    <button (click)="cellCancelEditing(row)">
+      <mat-icon class="icon-18">block</mat-icon>
+    </button>
+    <button *ngIf="col.type !== 'number'" (click)="row[col.field]=''">
+      <mat-icon class="icon-18">close</mat-icon>
+    </button>
+  </div>
+
+  <div *ngIf="!isCellEditable(index, col)" (click)="changeCellInputVisibility(index, col, row)">
+    {{ row[col.field] }}
+    <span *ngIf="row[col.field] === ''">&nbsp;</span>
+  </div>
+</ng-template>

@@ -33,6 +33,10 @@ import {environment} from "@env/environment";
         <mat-icon>edit</mat-icon>
         <span>{{ 'edit_profile' | translate }}</span>
       </button>
+      <button id="profile-edit-button" routerLink="/sessions" mat-menu-item>
+        <mat-icon>sync</mat-icon>
+        <span>{{ 'sessions' | translate }}</span>
+      </button>
       <button id="restore-defaults-button" mat-menu-item (click)="restore()">
         <mat-icon>restore</mat-icon>
         <span>{{ 'restore_defaults' | translate }}</span>
@@ -77,7 +81,7 @@ export class UserComponent implements OnInit {
 
   logout() {
     this.auth.logout().subscribe(() => {
-      this.router.navigateByUrl('/');
+      this.router.navigateByUrl('/').then();
     });
   }
 

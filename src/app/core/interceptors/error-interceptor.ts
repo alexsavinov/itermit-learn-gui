@@ -18,6 +18,7 @@ export enum STATUS {
   UNAUTHORIZED = 401,
   FORBIDDEN = 403,
   NOT_FOUND = 404,
+  CONFLICT = 409,
   INTERNAL_SERVER_ERROR = 500
 }
 
@@ -26,7 +27,8 @@ export enum ERROR_CODE {
   REFRESH_TOKEN_NOT_FOUND = 10002,
   BAD_CREDENTIALS = 10402,
   USERNAME_NOT_FOUND = 10403,
-  USERNAME_ALREADY_EXISTS = 40903
+  USERNAME_ALREADY_EXISTS = 40903,
+  SOURCE_REFERENCED_FROM_TABLES = 41004
 }
 
 @Injectable()
@@ -47,16 +49,16 @@ export class ErrorInterceptor implements HttpInterceptor {
   };
 
   constructor(
-    private router: Router,
-    private toast: ToastrService,
-    private tokenService: TokenService,
-    private loginService: LoginService) {
+      private router: Router,
+      private toast: ToastrService,
+      private tokenService: TokenService,
+      private loginService: LoginService) {
   }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next
-      .handle(request)
-      .pipe(catchError((error: HttpErrorResponse) => this.handleError(error, request, next)));
+        .handle(request)
+        .pipe(catchError((error: HttpErrorResponse) => this.handleError(error, request, next)));
   }
 
   isRefreshing = false;
@@ -65,18 +67,17 @@ export class ErrorInterceptor implements HttpInterceptor {
     const {errorCode, errorMessage} = error.error;
 
     if (this.errorPages.includes(error.status)) {
-      this.router.navigateByUrl(`/${error.status}`, {
-        skipLocationChange: true,
-      });
+      this.router.navigateByUrl(`/${error.status}`, {skipLocationChange: true}).then();
     } else {
       this.toast.error(this.getMessage(error));
 
       if (errorCode === ERROR_CODE.REFRESH_TOKEN_EXPIRED
-        || errorCode === ERROR_CODE.REFRESH_TOKEN_NOT_FOUND) {
-        this.router.navigateByUrl('/auth/login');
+          || errorCode === ERROR_CODE.REFRESH_TOKEN_NOT_FOUND) {
+        this.router.navigateByUrl('/auth/login').then();
       } else if (errorCode === ERROR_CODE.USERNAME_NOT_FOUND
-        || errorCode === ERROR_CODE.BAD_CREDENTIALS
-        || errorCode === ERROR_CODE.USERNAME_ALREADY_EXISTS) {
+          || errorCode === ERROR_CODE.BAD_CREDENTIALS
+          || errorCode === ERROR_CODE.SOURCE_REFERENCED_FROM_TABLES
+          || errorCode === ERROR_CODE.USERNAME_ALREADY_EXISTS) {
       } else if (error.status === STATUS.UNAUTHORIZED) {
         return this.handleAccessError(request, next);
       } else {
@@ -95,33 +96,33 @@ export class ErrorInterceptor implements HttpInterceptor {
       if (refreshToken == null) {
         this.isRefreshing = false;
         this.tokenService.set(undefined);
-        this.router.navigateByUrl('/auth/login');
+        this.router.navigateByUrl('/auth/login').then();
       } else {
-        console.log('-- handleAccessError -- 401 - token expired? refreshToken', refreshToken);
+        console.log('Token expired!');
         this.loginService.refresh({refreshToken}).subscribe(data => {
-            this.tokenService.set(data);
-            return next.handle(
-              request.clone({
-                headers: request.headers.append('Authorization', data.access_token),
-                withCredentials: true,
-              }),
-            );
-          },
-          (error) => {
-            this.isRefreshing = false;
-            const {errorCode, errorMessage} = error.error;
-            // this.tokenService.clear();
-
-            if (errorCode === ERROR_CODE.REFRESH_TOKEN_EXPIRED
-              || errorCode === ERROR_CODE.REFRESH_TOKEN_NOT_FOUND) {
+              this.tokenService.set(data);
+              return next.handle(
+                  request.clone({
+                    headers: request.headers.append('Authorization', data.access_token),
+                    withCredentials: true,
+                  }),
+              );
+            },
+            (error) => {
               this.isRefreshing = false;
-              this.tokenService.set(undefined);
-              this.router.navigateByUrl('/auth/login');
-              return;
-            }
-            this.toast.error(this.getMessage(error));
-            return throwError(() => new Error(`${error}`));
-          });
+              const {errorCode, errorMessage} = error.error;
+              // this.tokenService.clear();
+
+              if (errorCode === ERROR_CODE.REFRESH_TOKEN_EXPIRED
+                  || errorCode === ERROR_CODE.REFRESH_TOKEN_NOT_FOUND) {
+                this.isRefreshing = false;
+                this.tokenService.set(undefined);
+                this.router.navigateByUrl('/auth/login').then();
+                return;
+              }
+              this.toast.error(this.getMessage(error));
+              return throwError(() => new Error(`${error}`));
+            });
       }
 
       this.isRefreshing = false;

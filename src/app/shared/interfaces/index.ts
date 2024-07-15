@@ -1,3 +1,6 @@
+export * from './pageable.interface';
+export * from './table-cell.interface';
+
 import { FormGroup, FormControl } from '@angular/forms';
 
 export type ControlsOf<T extends Record<string, any>> = {

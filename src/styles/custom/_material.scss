@@ -16,3 +16,7 @@
     width: 100%;
   }
 }
+
+::ng-deep .mat-mdc-paginator-page-size-select {
+  max-width: 5em;
+}

@@ -1,0 +1,101 @@
+<page-header></page-header>
+
+<mtx-grid [data]="list"
+          [columns]="columns"
+          [length]="total"
+          [loading]="isLoading"
+          [rowStriped]="true"
+          [showToolbar]="true"
+          [toolbarTemplate]="tableTitleTpl"
+          [columnHideable]="true"
+          [columnPinnable]="true"
+          [pageOnFront]="false"
+          [pageIndex]="query.page"
+          [pageSize]="query.size"
+          [pageSizeOptions]="[1,5,10,20]"
+          [sortActive]="'id'"
+          [sortOnFront]="false"
+          (sortChange)="changeSort($event)"
+          (page)="getNextPage($event)"
+          [cellTemplate]="{custom: tableCheckboxInputTpl}">
+</mtx-grid>
+
+<!-- TABLE CELL CHECKBOX TEMPLATE -->
+<ng-template #tableCheckboxInputTpl let-row let-index="index" let-col="colDef">
+  <mat-checkbox [checked]="row[col.field]" [disableRipple]="true" (click)="$event.preventDefault()"></mat-checkbox>
+</ng-template>
+
+<!-- TABLE TITLE TEMPLATE -->
+<ng-template #tableTitleTpl>
+  <div class="d-flex justify-content-between">
+
+    <!-- SEARCH -->
+    <form class="d-flex align-items-center"
+          (submit)="$event.preventDefault()"
+          [formGroup]="reactiveForm">
+      <mat-form-field appearance="outline" class="m-b--16">
+        <input id="search"
+               formControlName="search"
+               matInput
+               (keyup)="onKeyUp()"
+               placeholder="Search">
+      </mat-form-field>
+
+      <!-- CATEGORY -->
+      <mat-form-field class="m-x-4 m-b--16">
+        <mat-label>Category</mat-label>
+        <mtx-select formControlName="category"
+                    (scrollToEnd)="moreCategories()"
+                    (search)="filterCategories($event.term)"
+                    (clear)="resetCategory()"
+                    (change)="changeCategory($event)"
+                    [virtualScroll]="true">
+          <mtx-option *ngFor="let category of categories" [value]="category">
+            {{ category.name }}
+          </mtx-option>
+        </mtx-select>
+      </mat-form-field>
+
+      <!-- USER -->
+      <mat-form-field class="m-x-4 m-b--16">
+        <mat-label>User</mat-label>
+        <mtx-select formControlName="user"
+                    (scrollToEnd)="moreUsers()"
+                    (search)="filterUsers($event.term)"
+                    (change)="changeUser($event)"
+                    (clear)="resetUser()"
+                    [virtualScroll]="true">
+          <mtx-option *ngFor="let user of users" [value]="user">
+            {{ user.username }}
+          </mtx-option>
+        </mtx-select>
+      </mat-form-field>
+
+      <!-- CUSTOM -->
+      <div class="m-x-8">
+        <section class="d-flex flex-row">
+          <mat-checkbox [value]="custom"
+                        [indeterminate]="custom===''"
+                        (click)="changeCustom()">
+            Custom
+          </mat-checkbox>
+        </section>
+      </div>
+
+      <button id="reset-button" class="m-x-8"
+              mat-stroked-button type="submit"
+              color="warn" (click)="reset()">
+        <mat-icon>restart_alt</mat-icon>
+        Reset
+      </button>
+    </form>
+
+    <div class="d-flex align-items-center">
+      <button id="create-button" mat-stroked-button
+              color="primary" routerLink="create">
+        <mat-icon>add</mat-icon>
+        Add
+      </button>
+    </div>
+  </div>
+</ng-template>

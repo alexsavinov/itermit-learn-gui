@@ -7,7 +7,7 @@ import { User } from '@core';
 
 
 export interface IPageableUsers {
-  _embedded?: {
+  _embedded: {
     users: User[];
   };
   items: any[];

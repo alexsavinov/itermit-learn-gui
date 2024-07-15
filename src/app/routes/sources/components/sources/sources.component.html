@@ -1,0 +1,54 @@
+<page-header></page-header>
+
+<mtx-grid [data]="list"
+          [columns]="columns"
+          [length]="total"
+          [loading]="isLoading"
+          [rowStriped]="true"
+          [showToolbar]="true"
+          [toolbarTemplate]="tableTitleTpl"
+          [columnHideable]="true"
+          [columnPinnable]="true"
+          [pageOnFront]="false"
+          [pageIndex]="query.page"
+          [pageSize]="query.size"
+          [pageSizeOptions]="[1,5,10,20]"
+          [sortActive]="'id'"
+          [sortOnFront]="false"
+          (sortChange)="changeSort($event)"
+          (page)="getNextPage($event)">
+</mtx-grid>
+
+<!-- TABLE TITLE TEMPLATE -->
+<ng-template #tableTitleTpl>
+  <div class="d-flex justify-content-between">
+
+    <!-- SEARCH -->
+    <form class="d-flex align-items-center"
+          (submit)="$event.preventDefault()"
+          [formGroup]="reactiveForm">
+      <mat-form-field appearance="outline" class="m-b--16">
+        <input id="search"
+               formControlName="search"
+               matInput
+               (keyup)="onKeyUp()"
+               placeholder="Search">
+      </mat-form-field>
+
+      <button id="reset-button" class="m-x-8"
+              mat-stroked-button type="submit"
+              color="warn" (click)="reset()">
+        <mat-icon>restart_alt</mat-icon>
+        Reset
+      </button>
+    </form>
+
+    <div class="d-flex align-items-center">
+      <button mat-stroked-button id="create-button"
+              color="primary" routerLink="create">
+        <mat-icon>add</mat-icon>
+        Add
+      </button>
+    </div>
+  </div>
+</ng-template>

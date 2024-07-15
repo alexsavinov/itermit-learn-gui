@@ -10,6 +10,25 @@
   <mat-card-content>
     <form [formGroup]="reactiveForm" class="form-field-full">
 
+      <!-- VISIBLE -->
+      <mat-checkbox id="visible" formControlName="visible" [checked]="visible.value" (change)="changeVisible()">
+        Visible
+      </mat-checkbox>
+
+      <!-- PUBLISH DATE -->
+      <mat-form-field class="m-t-12">
+        <mat-label>Publish date</mat-label>
+        <input id="publish-date" matInput [mtxDatetimepicker]="picker2" placeholder="Choose a date" formControlName="publishDate">
+        <mtx-datetimepicker-toggle [for]="picker2" matSuffix></mtx-datetimepicker-toggle>
+        <mtx-datetimepicker #picker2 startView="month" [timeInterval]="5"
+                            [timeInput]="true" [twelvehour]="true">
+        </mtx-datetimepicker>
+        <mat-error id="publish-date-error" *ngIf="publishDate.invalid">
+          {{ publishDate | validationMessage }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- TITLE -->
       <mat-form-field>
         <mat-label>Title</mat-label>
         <input id="title" matInput placeholder="Title" formControlName="title">
@@ -50,32 +69,27 @@
         <input id="description" matInput placeholder="Description" formControlName="description">
       </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Author</mat-label>
-        <input id="author" matInput placeholder="Author" formControlName="author" readonly>
-      </mat-form-field>
-
       <!-- TinyMCE Editor -->
       <editor [apiKey]="apiKey"
               [init]="config"
-              formControlName="content">
+              formControlName="content"
+              (onInit)="reactiveForm.markAsPristine()">
       </editor>
 
-      <mat-form-field class="m-t-12">
-        <mat-label>Publish date</mat-label>
-        <input id="publish-date" matInput [mtxDatetimepicker]="picker2" placeholder="Choose a date" formControlName="publishDate">
-        <mtx-datetimepicker-toggle [for]="picker2" matSuffix></mtx-datetimepicker-toggle>
-        <mtx-datetimepicker #picker2 startView="month" [timeInterval]="5"
-                            [timeInput]="true" [twelvehour]="true">
-        </mtx-datetimepicker>
-        <mat-error id="publish-date-error" *ngIf="publishDate.invalid">
-          {{ publishDate | validationMessage }}
-        </mat-error>
+      <!-- AUTHOR -->
+      <mat-form-field>
+        <mat-label>Author</mat-label>
+        <mtx-select formControlName="author"
+                    (scrollToEnd)="moreUsers()"
+                    (search)="filterUsers($event.term)"
+                    (change)="changeUser($event)"
+                    (clear)="resetUser()"
+                    [virtualScroll]="true">
+          <mtx-option *ngFor="let user of users" [value]="user">
+            {{ user.username }}
+          </mtx-option>
+        </mtx-select>
       </mat-form-field>
-
-      <mat-checkbox id="visible" formControlName="visible" [checked]="visible.value" (change)="changeVisible()">
-        Visible
-      </mat-checkbox>
 
       <div class="d-flex justify-content-end m-t-12">
         <!-- BUTTON BACK -->

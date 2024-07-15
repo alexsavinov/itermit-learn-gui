@@ -3,7 +3,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 
-
 @Pipe({ name: 'validationMessage', pure: false })
 export class ValidationMessagePipe implements PipeTransform {
   constructor(private translate: TranslateService) {

@@ -18,7 +18,7 @@ import { NewsComponent, NewsDetailsComponent, NewsShowComponent } from './compon
     NewsRoutingModule,
     EditorComponent,
     SharedModule,
-    NgOptimizedImage,
+    NgOptimizedImage
   ]
 })
 export class NewsModule {

@@ -66,7 +66,7 @@ export class RegisterComponent {
       .register(this.username.value, this.password.value)
       .subscribe({
         next: (data) => {
-          this.router.navigateByUrl('/auth/login');
+          this.router.navigateByUrl('/auth/login').then();
         },
         error: (errorRes: HttpErrorResponse) => {
           console.log(errorRes);

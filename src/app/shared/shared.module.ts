@@ -18,10 +18,12 @@ import {
   BreadcrumbComponent,
   PageHeaderComponent,
   ErrorCodeComponent,
-  DialogLeaveComponent
+  DialogLeaveComponent,
+  DialogSaveComponent
 } from '@shared/components';
 import { DisableControlDirective } from './directives/disable-control.directive';
 import { SafeUrlPipe, ToObservablePipe, ValidationMessagePipe } from '@shared/pipes';
+import { NgApexchartsModule } from "ng-apexcharts";
 
 
 const MODULES: any[] = [
@@ -41,12 +43,14 @@ const MODULES: any[] = [
   NgxMaskDirective,
   NgxMaskPipe,
   EditorModule,
+  NgApexchartsModule
 ];
 const COMPONENTS: any[] = [
   BreadcrumbComponent,
   PageHeaderComponent,
   ErrorCodeComponent,
   DialogLeaveComponent,
+  DialogSaveComponent,
 ];
 const COMPONENTS_DYNAMIC: any[] = [];
 const DIRECTIVES: any[] = [DisableControlDirective];

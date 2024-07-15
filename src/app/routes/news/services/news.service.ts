@@ -23,17 +23,11 @@ export class NewsService {
   }
 
   create(article: IArticle): Observable<IArticle> {
-    return this.http.post<IArticle>(
-      `${environment.apiUrl}/articles`,
-      {...article, authorId: article.author?.id},
-    );
+    return this.http.post<IArticle>(`${environment.apiUrl}/articles`, article);
   }
 
   update(article: IArticle): Observable<IArticle> {
-    return this.http.patch<IArticle>(
-      `${environment.apiUrl}/articles`,
-      {...article, authorId: article.author?.id},
-    );
+    return this.http.patch<IArticle>(`${environment.apiUrl}/articles`, article);
   }
 
   deleteById(id: number): Observable<boolean> {

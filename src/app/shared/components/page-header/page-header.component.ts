@@ -43,9 +43,12 @@ export class PageHeaderComponent implements OnInit {
   }
 
   genBreadcrumb() {
-    const routes = this.router.url.slice(1).split('/').slice(1); // added slice(1)
-    this.nav = this.menu.getLevel(routes);
-    this.nav.unshift('admin');
+    const routes = this.router.url.slice(1).split('/'); // added slice(1)
+    // const routes = this.router.url.slice(1).split('/').slice(1); // added slice(1)
+
+    // this.nav = this.menu.getLevel(routes);
+    this.nav = routes;
+    // this.nav.unshift('admin');
   }
 
   static ngAcceptInputType_hideBreadcrumb: BooleanInput;

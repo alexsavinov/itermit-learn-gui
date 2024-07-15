@@ -1,0 +1,9 @@
+@media (min-width: 800px) {
+  ::ng-deep .mat-step-label {
+    display: none !important;
+  }
+
+  ::ng-deep .mat-horizontal-stepper-header .mat-step-icon {
+    margin-right: 0px !important;
+  }
+}

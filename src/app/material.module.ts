@@ -80,7 +80,7 @@ import { PaginatorI18nService } from '@shared/services/paginator-i18n.service';
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatTreeModule,
+    MatTreeModule
   ],
   providers: [
     {

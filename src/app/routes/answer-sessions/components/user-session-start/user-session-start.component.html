@@ -1,0 +1,129 @@
+<h2>Starting a new session</h2>
+
+<mat-card>
+
+  <mat-card-header>
+    <mat-card-title>Parameters</mat-card-title>
+    <mat-card-subtitle>Here you can set parameters of new session.</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content class="d-flex flex-col">
+    <form [formGroup]="reactiveForm" class="form-field-full">
+
+      <br>
+      <!-- CATEGORY -->
+      <mat-hint>Category of questions and quizzes.</mat-hint>
+      <mat-form-field>
+        <mat-label>Category</mat-label>
+        <mtx-select formControlName="category"
+                    (scrollToEnd)="moreCategories()"
+                    (search)="filterCategories($event.term)"
+                    (clear)="resetCategory()"
+                    (change)="changeCategory($event)"
+                    [virtualScroll]="true">
+          <mtx-option *ngFor="let category of categories" [value]="category">
+            {{ category.name }}
+          </mtx-option>
+        </mtx-select>
+      </mat-form-field>
+
+      <!-- SOURCE -->
+      <mat-hint>Source of materials.</mat-hint>
+      <mat-form-field>
+        <mat-label>Source</mat-label>
+        <mtx-select formControlName="source"
+                    (scrollToEnd)="moreSources()"
+                    (search)="filterSources($event.term)"
+                    (change)="changeSource($event)"
+                    (clear)="resetSource()"
+                    [virtualScroll]="true">
+          <mtx-option *ngFor="let source of sources" [value]="source">
+            {{ source.name }}
+          </mtx-option>
+        </mtx-select>
+      </mat-form-field>
+
+      <br>
+
+      <mat-tab-group dynamicHeight (selectedTabChange)="tabChange($event)">
+
+        <!-- TAB 1 -->
+        <mat-tab [disabled]="!_category" label="AUTMATIC">
+          <ng-template mat-tab-label>Automatic</ng-template>
+          <h3 *ngIf="!category.value" class="text-light-blue-500">
+            Select Category to continue!
+          </h3>
+          <div class="d-flex flex-col" *ngIf="category.value">
+
+            <br>
+            <!-- MODE -->
+            <mat-hint>Session mode.</mat-hint>
+            <section class="d-flex flex-row m-b-12">
+              <mat-radio-group [(ngModel)]="mode" [ngModelOptions]="{standalone: true}">
+                <mat-radio-button value="MIXED">Mixed</mat-radio-button>
+                <mat-radio-button value="QUIZZES">Quizzes</mat-radio-button>
+                <mat-radio-button value="QUESTIONS">Questions</mat-radio-button>
+              </mat-radio-group>
+            </section>
+
+            <!-- TOTAL ITEMS -->
+            <mat-hint>Total amount of quizzes and answers in session.</mat-hint>
+            <mat-form-field>
+              <mat-label>Total items</mat-label>
+              <mat-select value="{{totalItems.value}}" (valueChange)="changeTotalItems($event)" required>
+                <mat-option value=5>5</mat-option>
+                <mat-option value=10>10</mat-option>
+                <mat-option value=20>20</mat-option>
+                <mat-option value=50>50</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-tab>
+
+        <!-- TAB 2 -->
+        <mat-tab [disabled]="!_category" label="CUSTOM">
+          <ng-template mat-tab-label>Manual</ng-template>
+          <h3 *ngIf="!category.value" class="text-light-blue-500">
+            Select Category to continue!
+          </h3>
+          <div class="d-flex flex-col" *ngIf="category.value">
+
+            <br>
+            <!-- SET -->
+            <mat-form-field>
+              <mat-label>Question set</mat-label>
+              <mtx-select formControlName="set"
+                          (scrollToEnd)="moreSets()"
+                          (search)="filterSets($event.term)"
+                          (clear)="resetSet()"
+                          (change)="changeSet($event)"
+                          [virtualScroll]="true">
+                <mtx-option *ngFor="let set of sets" [value]="set">
+                  {{ set.name }}
+                </mtx-option>
+              </mtx-select>
+            </mat-form-field>
+
+          </div>
+        </mat-tab>
+
+      </mat-tab-group>
+
+      <div class="d-flex justify-content-end m-t-12">
+        <!-- BUTTON BACK -->
+        <button id="back-button" class="m-r-8" mat-raised-button routerLink="../" (click)="$event.preventDefault()">
+          Back
+        </button>
+        <!-- BUTTON START -->
+        <button id="start-button" mat-raised-button color="primary"
+                type="submit"
+                [disabled]="!!reactiveForm.invalid || !reactiveForm.dirty"
+                [loading]="isSubmitting"
+                (click)="start()">
+          Start
+        </button>
+      </div>
+
+    </form>
+  </mat-card-content>
+</mat-card>

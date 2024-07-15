@@ -1,0 +1,102 @@
+<mat-card>
+  <mat-card-content>
+
+    <form *ngIf="formGroup" [formGroup]="formGroup">
+
+      <mat-stepper formArrayName="formArray"
+                   (selectionChange)="stepChange($event)"
+                   [orientation]="(stepperOrientation | async)!"
+                   [linear]="true"
+                   #stepper>
+
+        <!-- STEPS -->
+        <mat-step *ngFor="let step of steps; let index=index"
+                  formGroupName="{{index}}"
+                  [stepControl]="$any(formArray?.get([index]))">
+
+          <!-- LABEL -->
+          <ng-template matStepLabel>
+            {{ step.title }}
+          </ng-template>
+
+          <ng-template matStepContent>
+            <!-- TITLE -->
+            <h2>
+              <span *ngIf="step.quizAnswers">Quiz: </span>
+              <span *ngIf="step.answer">Question: </span>
+              {{ step.title }}
+            </h2>
+
+            <!-- QUESTION CONTENT -->
+            <div [innerHTML]="step.content"></div>
+
+            <br>
+
+            <!-- QUIZ ANSWERS -->
+            <div *ngIf="step.quizAnswers">
+              <mat-radio-group formControlName="answer" class="d-flex flex-col">
+                <mat-radio-button *ngFor="let answer of step.quizAnswers" [value]="answer"
+                                  [disabled]="!!session.finishedDate">
+                  {{ answer.content }}
+                </mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+            <!--QUESTION ANSWERS -->
+            <div *ngIf="step.answer">
+              <mat-form-field>
+                <input matInput type="text" formControlName="answer" [readonly]="!!session.finishedDate" required>
+              </mat-form-field>
+              <br>
+              <!--CORRECT ANSWERS -->
+              {{ step.answer.content }}
+            </div>
+
+            <br>
+
+            <!--BUTTONS -->
+            <div>
+              <button mat-raised-button
+                      matStepperPrevious
+                      *ngIf="index > 0"
+                      (click)="changeSelectedIndex(-1)"
+                      color="primary"
+                      class="m-r-12">
+                Back
+              </button>
+              <button mat-raised-button color="primary"
+                      (click)="changeSelectedIndex(1)"
+                      matStepperNext>
+                Next
+              </button>
+            </div>
+
+          </ng-template>
+        </mat-step>
+
+        <!-- FINAL STEP -->
+        <mat-step>
+          <ng-template matStepLabel>Done</ng-template>
+          You are now done.
+
+          <div>
+            <button mat-raised-button
+                    matStepperPrevious
+                    (click)="changeSelectedIndex(-1)"
+                    color="primary"
+                    class="m-r-12">
+              Back
+            </button>
+
+            <button mat-raised-button color="primary" (click)="finish()" routerLink="summary">
+              Finish
+            </button>
+          </div>
+        </mat-step>
+
+      </mat-stepper>
+
+    </form>
+
+  </mat-card-content>
+</mat-card>

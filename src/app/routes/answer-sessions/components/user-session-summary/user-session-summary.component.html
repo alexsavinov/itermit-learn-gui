@@ -1,0 +1,174 @@
+
+<mat-card *ngIf="session" appearance="raised">
+
+  <!-- HEADER -->
+  <mat-card-header [ngClass]="dark ? 'bg-light-blue-900' : 'bg-blue-300'">
+    <mat-card-title-group>
+      <mat-card-title>
+        Session report <b>#{{ session.id }}</b>
+        [ Question set
+        <span class="text-orange-400">{{ session.questionSet?.name }}</span> ]
+      </mat-card-title>
+      <mat-card-subtitle>
+        Answered questions and quizzes
+      </mat-card-subtitle>
+    </mat-card-title-group>
+
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Finished</mat-label>
+        <input matInput readonly
+               value="{{ session.finishedDate | date:'yyyy-MM-dd HH:mm:ss' }}">
+      </mat-form-field>
+    </div>
+  </mat-card-header>
+
+  <mat-card-content  [ngClass]="dark ? 'bg-grey-900' : 'bg-grey-200'">
+    <!-- SUMMARY -->
+    <p>
+      Total questions: {{ session.questionSet?.questions?.length }}<br>
+      Correct answers: {{ session.userAnswers?.length }}
+    </p>
+    <p>
+      Total quizzes: {{ session.questionSet?.quizzes?.length }}<br>
+      Correct quiz answers: {{ correctQuizAnswers }}
+    </p>
+
+    <!-- CHART -->
+    <apx-chart #chart
+        [colors]="chartOptions.colors"
+        [series]="chartOptions.series"
+        [chart]="chartOptions.chart"
+        [dataLabels]="chartOptions.dataLabels"
+        [plotOptions]="chartOptions.plotOptions"
+        [xaxis]="chartOptions.xaxis"
+        [stroke]="chartOptions.stroke"
+        [fill]="chartOptions.fill"
+        [title]="chartOptions.title"
+        [tooltip]="chartOptions.tooltip"
+        [legend]="chartOptions.legend"
+        [theme]="chartOptions.theme"
+    ></apx-chart>
+
+    <div class="w-100 d-flex justify-content-end m-b-8">
+      <button mat-stroked-button color="accent" (click)="accordion().openAll()">
+        <mat-icon>unfold_more</mat-icon>
+        Expand All
+      </button>
+      <button mat-stroked-button color="accent" (click)="accordion().closeAll()">
+        <mat-icon>unfold_less</mat-icon>
+        Collapse All
+      </button>
+    </div>
+
+    <mat-accordion  multi>
+
+      <!-- QUESTIONS -->
+      <span *ngFor="let question of session.questionSet?.questions">
+      <mat-expansion-panel [expanded]="false"
+                           *ngIf="getUserAnswer(question.id); let userAnswer">
+        <mat-expansion-panel-header>
+
+          <!-- ID -->
+          <mat-panel-title>
+            <mat-chip>
+              Question
+              <span class="f-w-900" [ngClass]="dark ? 'text-grey-400' : 'text-grey-600'">
+                 [{{ question.id }}]
+              </span>
+            </mat-chip>
+          </mat-panel-title>
+
+          <!-- TITLE -->
+          <mat-panel-description>
+            {{ question.title }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <!-- CONTENT -->
+        <p class="m-b-32" [ngClass]="dark ? 'text-blue-100' : 'text-grey-200'">
+          {{ question.content }}
+        </p>
+
+        <!-- CORRECT ANSWER -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label [ngClass]="dark ? 'text-green-300' : 'text-green-900'">Correct answer</mat-label>
+          <input matInput readonly value="{{ question.answer?.content }}">
+        </mat-form-field>
+
+        <!-- USER ANSWER -->
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>User answer</mat-label>
+          <input matInput readonly value="{{ userAnswer.content }}">
+        </mat-form-field>
+
+      </mat-expansion-panel>
+        </span>
+
+      <!-- QUIZZES -->
+      <span *ngFor="let quiz of session.questionSet?.quizzes">
+        <mat-expansion-panel [expanded]="!quizAnswer.correct"
+                             *ngIf="getQuizAnswer(quiz.id); let quizAnswer">
+
+          <!-- QUIZ -->
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <mat-chip [ngClass]="{'bg-green-600': dark && quizAnswer.correct,
+                                    'bg-red-500': dark && !quizAnswer.correct,
+                                    'bg-green-200': !dark && quizAnswer.correct,
+                                    'bg-red-200': !dark && !quizAnswer.correct}">
+                Quiz
+                <span class="f-w-900" [ngClass]="dark ? 'text-grey-400' : 'text-grey-600'">
+                   [{{ quiz.id }}]
+                </span>
+              </mat-chip>
+            </mat-panel-title>
+
+            <!-- TITLE -->
+            <mat-panel-description>
+              {{ quiz.title }}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <!-- CONTENT -->
+          <p class="m-b-32" [ngClass]="dark ? 'text-blue-100' : 'text-grey-200'">
+            {{ quiz.content }}
+          </p>
+
+          <!-- QUIZ ANSWERS -->
+          <div *ngFor="let quizAnswer1 of quiz.quizAnswers">
+
+            <mat-form-field *ngIf="quizAnswer1.id === quizAnswer.id"
+                            appearance="fill" class="w-full">
+              <mat-label *ngIf="quizAnswer1.correct" [ngClass]="dark ? 'text-green-300' : 'text-green-900'">
+                Correct user answer
+              </mat-label>
+              <mat-label *ngIf="!quizAnswer1.correct" [ngClass]="dark ? 'text-red-300' : 'text-red-900'">
+                Wrong user answer
+              </mat-label>
+              <input matInput readonly value="{{ quizAnswer1.content }}">
+            </mat-form-field>
+
+            <mat-form-field *ngIf="quizAnswer1.id !== quizAnswer.id"
+                            appearance="outline" class="w-full">
+              <mat-label *ngIf="quizAnswer1.correct" [ngClass]="dark ? 'text-green-300' : 'text-green-900'">
+                Correct answer
+              </mat-label>
+              <input matInput readonly value="{{ quizAnswer1.content }}">
+            </mat-form-field>
+
+          </div>
+        </mat-expansion-panel>
+      </span>
+
+    </mat-accordion>
+
+  </mat-card-content>
+</mat-card>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" mat-dialog-close routerLink="/sessions">
+    To sessions list
+  </button>
+</mat-dialog-actions>
+

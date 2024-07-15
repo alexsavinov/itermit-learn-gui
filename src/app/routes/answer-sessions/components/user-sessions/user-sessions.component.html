@@ -1,0 +1,80 @@
+<h2>My sessions</h2>
+
+<mtx-grid [data]="list"
+          [columns]="columns"
+          [length]="total"
+          [loading]="isLoading"
+          [rowStriped]="true"
+          [showToolbar]="true"
+          [toolbarTemplate]="tableTitleTpl"
+          [columnHideable]="true"
+          [columnPinnable]="true"
+          [pageOnFront]="false"
+          [pageIndex]="query.page"
+          [pageSize]="query.size"
+          [pageSizeOptions]="[1,5,10,20]"
+          [sortActive]="'id'"
+          [sortOnFront]="false"
+          (sortChange)="changeSort($event)"
+          (page)="getNextPage($event)">
+</mtx-grid>
+
+<!-- TABLE TITLE TEMPLATE -->
+<ng-template #tableTitleTpl>
+  <div class="d-flex justify-content-between">
+
+    <!-- SEARCH -->
+    <form class="d-flex align-items-center"
+          (submit)="$event.preventDefault()"
+          [formGroup]="reactiveForm">
+      <mat-form-field appearance="outline" class="m-b--16">
+        <input id="search"
+               formControlName="search"
+               matInput
+               (keyup)="onKeyUp()"
+               placeholder="Search">
+      </mat-form-field>
+
+      <!-- SET -->
+      <mat-form-field class="m-x-4 m-b--16">
+        <mat-label>Set</mat-label>
+        <mtx-select formControlName="set"
+                    (scrollToEnd)="moreSets()"
+                    (search)="filterSets($event.term)"
+                    (change)="changeSet($event)"
+                    (clear)="resetSet()"
+                    [virtualScroll]="true">
+          <mtx-option *ngFor="let set of sets" [value]="set">
+            {{ set.name }}
+          </mtx-option>
+        </mtx-select>
+      </mat-form-field>
+
+      <!-- FINISHED -->
+      <div class="m-x-8">
+        <section class="d-flex flex-row">
+          <mat-checkbox [value]="finished"
+                        [indeterminate]="finished===''"
+                        (click)="changeFinished()">
+            Finished
+          </mat-checkbox>
+        </section>
+      </div>
+
+      <button id="reset-button" class="m-x-8"
+              mat-stroked-button type="submit"
+              color="warn" (click)="reset()">
+        <mat-icon>restart_alt</mat-icon>
+        Reset
+      </button>
+    </form>
+
+    <div class="d-flex align-items-center">
+      <button id="start-button" mat-raised-button
+              color="accent" routerLink="start">
+        <mat-icon>flag</mat-icon>
+        Start
+      </button>
+    </div>
+  </div>
+</ng-template>

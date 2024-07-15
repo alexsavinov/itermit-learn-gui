@@ -9,12 +9,14 @@ import { AdminLayoutComponent } from '@theme/admin-layout/admin-layout.component
 import { AuthLayoutComponent } from '@theme/auth-layout/auth-layout.component';
 import { HomepageComponent } from '@theme/homepage/homepage.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { LoginComponent } from './sessions/login/login.component';
-import { RegisterComponent } from './sessions/register/register.component';
-import { Error403Component } from './sessions/403.component';
-import { Error404Component } from './sessions/404.component';
-import { Error500Component } from './sessions/500.component';
 import { NewsShowComponent } from './news/components';
+import {
+  UserSessionComponent,
+  UserSessionsComponent,
+  UserSessionStartComponent,
+  UserSessionSummaryComponent
+} from "./answer-sessions/components";
+import { Error403Component, Error404Component, Error500Component, LoginComponent, RegisterComponent } from "./sessions";
 
 
 const routes: Routes = [
@@ -24,6 +26,10 @@ const routes: Routes = [
     children: [
       { path: '', component: HomepageComponent },
       { path: 'news/:id', component: NewsShowComponent },
+      { path: 'sessions', component: UserSessionsComponent },
+      { path: 'sessions/start', component: UserSessionStartComponent },
+      { path: 'sessions/:id', component: UserSessionComponent },
+      { path: 'sessions/:id/summary', component: UserSessionSummaryComponent },
       {
         path: 'profile',
         loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule),
@@ -58,6 +64,30 @@ const routes: Routes = [
       {
         path: 'news',
         loadChildren: () => import('./news/news.module').then(m => m.NewsModule),
+      },
+      {
+        path: 'sessions',
+        loadChildren: () => import('./answer-sessions/answer-sessions.module').then(m => m.AnswerSessionsModule),
+      },
+      {
+        path: 'questions',
+        loadChildren: () => import('./questions/questions.module').then(m => m.QuestionsModule),
+      },
+      {
+        path: 'quizzes',
+        loadChildren: () => import('./quizzes/quizzes.module').then(m => m.QuizzesModule),
+      },
+      {
+        path: 'sources',
+        loadChildren: () => import('./sources/sources.module').then(m => m.SourceModule),
+      },
+      {
+        path: 'categories',
+        loadChildren: () => import('./categories/categories.module').then(m => m.CategoriesModule),
+      },
+      {
+        path: 'sets',
+        loadChildren: () => import('./sets/sets.module').then(m => m.SetsModule),
       },
       { path: '403', component: Error403Component },
       { path: '404', component: Error404Component },

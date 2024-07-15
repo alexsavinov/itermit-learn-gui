@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
+import { FormBuilder } from "@angular/forms";
 
 import { environment } from '@env/environment';
 import { cleanJSON, dateFormat } from '@core';
@@ -18,20 +19,24 @@ import { UsersService } from '../../services';
   styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent implements OnInit {
+  reactiveForm = this.fb.nonNullable.group({
+    search: ['']
+  });
+
   columns: MtxGridColumn[] = [
-    { header: 'id', field: 'id', type: 'number', width: '80px', sortable: true },
+    {header: 'id', field: 'id', type: 'number', width: '80px', sortable: true},
     {
       header: 'avatar',
       field: 'profile.avatar',
       type: 'image',
       width: '50px',
       formatter: (data: any) => data.profile.avatar
-        ? `<img src="${ environment.staticUrl + environment.avatarImages + data.profile.avatar }" width=35 alt="">`
-        : '',
+          ? `<img src="${environment.staticUrl + environment.avatarImages + data.profile.avatar}" width=35 alt="">`
+          : '',
     },
-    { header: 'username', field: 'username', sortable: true },
-    { header: 'name', field: 'profile.name', sortable: true },
-    { header: 'roles', field: 'roles' },
+    {header: 'username', field: 'username', sortable: true},
+    {header: 'name', field: 'profile.name', sortable: true},
+    {header: 'roles', field: 'roles'},
     {
       header: 'created', field: 'createdDate', type: 'date', sortable: true,
       formatter: (data: any) => dateFormat(data.createdDate)
@@ -87,12 +92,17 @@ export class UsersComponent implements OnInit {
     return Object.assign({}, this.query);
   }
 
+  get search() {
+    return this.reactiveForm.get('search')!;
+  }
+
   constructor(
-    private translate: TranslateService,
-    private usersService: UsersService,
-    private router: Router,
-    public activatedRoute: ActivatedRoute,
-    public toastrService: ToastrService) {
+      private fb: FormBuilder,
+      private translate: TranslateService,
+      private usersService: UsersService,
+      private router: Router,
+      public activatedRoute: ActivatedRoute,
+      public toastrService: ToastrService) {
   }
 
   ngOnInit() {
@@ -104,28 +114,21 @@ export class UsersComponent implements OnInit {
     this.isLoading = true;
 
     this.usersService
-      .getAll(cleanJSON(this.params))
-      .pipe(
-        finalize(() => {
-          this.isLoading = false;
-        }),
-      )
-      .subscribe(res => {
-        // console.log(res._embedded?.users);
-        this.list = res._embedded?.users || [];
-        this.total = res.page.totalElements;
-        // this.isLoading = false;
-      });
+        .getAll(cleanJSON(this.params))
+        .pipe(
+            finalize(() => {
+              this.isLoading = false;
+            }),
+        )
+        .subscribe(res => {
+          this.list = res._embedded?.users || [];
+          this.total = res.page.totalElements;
+        });
   }
 
   getNextPage(e: PageEvent) {
     this.query.page = e.pageIndex;
     this.query.size = e.pageSize;
-    this.getList();
-  }
-
-  search() {
-    this.query.page = 0;
     this.getList();
   }
 
@@ -135,25 +138,28 @@ export class UsersComponent implements OnInit {
   }
 
   reset() {
+    this.reactiveForm.patchValue({search: ''});
     this.query.page = 0;
     this.query.size = 10;
     this.query.search = '';
     this.query.sort = '';
+
     this.getList();
   }
 
   onKeyUp() {
+    this.query.search = this.search.value;
     this.subject.next(undefined);
   }
 
   edit(value: any) {
-    this.router.navigate([value.id], { relativeTo: this.activatedRoute });
+    this.router.navigate([value.id], {relativeTo: this.activatedRoute});
   }
 
   delete(value: any) {
     this.usersService.deleteById(value.id).subscribe(() => {
       this.getList();
-      this.toastrService.warning(`You have deleted user with id ${ value.id }!`);
+      this.toastrService.warning(`You have deleted user with id ${value.id}!`);
     });
   }
 }

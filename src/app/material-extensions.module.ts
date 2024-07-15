@@ -32,7 +32,7 @@ import { MtxMomentDatetimeModule } from '@ng-matero/extensions-moment-adapter';
     MtxSelectModule,
     MtxSplitModule,
     MtxTooltipModule,
-    MtxMomentDatetimeModule
+    MtxMomentDatetimeModule,
   ],
   providers: [
     {

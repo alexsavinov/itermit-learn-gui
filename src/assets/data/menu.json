@@ -11,16 +11,73 @@
       }
     },
     {
-      "route": "users",
-      "name": "users",
-      "type": "link",
-      "icon": "group"
+      "name": "system",
+      "type": "sub",
+      "icon": "settings",
+      "children": [
+        {
+          "route": "users",
+          "name": "users",
+          "type": "link",
+          "icon": "group"
+        },
+        {
+          "route": "news",
+          "name": "news",
+          "type": "link",
+          "icon": "announcement"
+        }
+      ]
     },
     {
-      "route": "news",
-      "name": "news",
-      "type": "link",
-      "icon": "announcement"
+      "name": "main",
+      "type": "sub",
+      "icon": "domain_verification",
+      "children": [
+        {
+          "route": "sessions",
+          "name": "answer-sessions",
+          "type": "link",
+          "icon": "sync"
+        },
+        {
+          "route": "sets",
+          "name": "sets",
+          "type": "link",
+          "icon": "list"
+        },
+        {
+          "route": "questions",
+          "name": "questions",
+          "type": "link",
+          "icon": "question_answer"
+        },
+        {
+          "route": "quizzes",
+          "name": "quizzes",
+          "type": "link",
+          "icon": "list"
+        }
+      ]
+    },
+    {
+      "name": "catalogs",
+      "type": "sub",
+      "icon": "folder_copy",
+      "children": [
+        {
+          "route": "sources",
+          "name": "sources",
+          "type": "link",
+          "icon": "list"
+        },
+        {
+          "route": "categories",
+          "name": "categories",
+          "type": "link",
+          "icon": "list"
+        }
+      ]
     }
   ]
 }

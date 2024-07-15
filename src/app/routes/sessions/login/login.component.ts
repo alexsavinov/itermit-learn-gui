@@ -48,7 +48,7 @@ export class LoginComponent {
       .pipe(filter(authenticated => authenticated))
       .subscribe({
         next: () => {
-          this.router.navigateByUrl('/');
+          this.router.navigateByUrl('/').then();
         },
         error: (errorRes: HttpErrorResponse) => {
           const { errorCode } = errorRes.error;

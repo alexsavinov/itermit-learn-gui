@@ -17,12 +17,27 @@
 
   <app-translate></app-translate>
 
+
+  <ng-template [ngxPermissionsOnly]="['ROLE_ADMIN', 'ROLE_USER']">
+    <mat-divider vertical class="h-60"></mat-divider>
+
+    <button id="sessions-button" mat-icon-button
+            matTooltip="Sessions"
+            routerLink="/sessions">
+      <mat-icon color="primary">flag</mat-icon>
+    </button>
+  </ng-template>
+
   <ng-template [ngxPermissionsOnly]="['ROLE_ADMIN']"
                (permissionsAuthorized)="authorized()"
                (permissionsUnauthorized)="unAuthorized()">
     <button id="admin-panel-button" mat-icon-button matTooltip="Admin panel" routerLink="/admin">
       <mat-icon>settings</mat-icon>
     </button>
+  </ng-template>
+
+  <ng-template [ngxPermissionsOnly]="['ROLE_ADMIN', 'ROLE_USER']">
+    <mat-divider vertical class="h-60"></mat-divider>
   </ng-template>
 
   <app-user></app-user>

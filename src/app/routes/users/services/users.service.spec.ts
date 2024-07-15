@@ -36,7 +36,7 @@ describe('UsersService', () => {
     const parameters = {
       page: '10',
       sort: 'name,desc',
-      size: 3,
+      size: 10,
       search: 'test'
     };
 
